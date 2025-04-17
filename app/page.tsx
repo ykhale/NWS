@@ -1,103 +1,143 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import dynamic from 'next/dynamic';
+import WarningsList from '../components/WarningsList';
+import 'leaflet/dist/leaflet.css';
+import Link from 'next/link';
+import Image from 'next/image';
+
+// Load the Map component without server-side rendering (Leaflet needs the browser)
+const MapWithNoSSR = dynamic(() => import('../components/Map'), { ssr: false });
+
+interface Warning {
+  id: string;
+  properties: {
+    event: string;
+    areaDesc: string;
+    severity: string;
+    certainty: string;
+    urgency: string;
+    description: string;
+    instruction: string;
+    effective: string;
+    expires: string;
+  };
+  geometry?: {
+    type: string;
+    coordinates: number[] | number[][] | number[][][];
+  };
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [selectedWarning, setSelectedWarning] = useState<Warning | null>(null);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([37.8, -96]);
+  const [mapZoom, setMapZoom] = useState(4);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleWarningSelect = (warning: Warning) => {
+    setSelectedWarning(warning);
+    
+    // If the warning has geometry, calculate the center point
+    if (warning.geometry) {
+      let coordinates: number[];
+      if (warning.geometry.type === 'Point') {
+        coordinates = warning.geometry.coordinates as number[];
+      } else if (warning.geometry.type === 'Polygon' && Array.isArray(warning.geometry.coordinates[0])) {
+        // For polygons, calculate the center point of the first ring
+        const ring = warning.geometry.coordinates[0] as number[][];
+        const lats = ring.map(coord => coord[1]);
+        const lngs = ring.map(coord => coord[0]);
+        const centerLat = (Math.min(...lats) + Math.max(...lats)) / 2;
+        const centerLng = (Math.min(...lngs) + Math.max(...lngs)) / 2;
+        coordinates = [centerLng, centerLat];
+      } else {
+        return;
+      }
+
+      if (coordinates && coordinates.length >= 2) {
+        const [lng, lat] = coordinates;
+        setMapCenter([lat, lng]);
+        setMapZoom(9); // Zoom in closer when a warning is selected
+      }
+    }
+  };
+
+  return (
+    <div>
+      {/* Hero Section */}
+      <section className="hero" style={{ backgroundColor: '#1e40af', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="hero-content">
+          <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>
+            Stay Safe with Real-Time Weather Alerts
+          </h1>
+          <p style={{ fontSize: '1.5rem', marginBottom: '2rem', maxWidth: '42rem', margin: '0 auto 2rem' }}>
+            Get instant notifications about severe weather events directly to your inbox.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
+            <Link href="/subscribe" className="btn btn-secondary" style={{ padding: '1rem 2rem', fontSize: '1.125rem' }}>
+              Subscribe Now
+            </Link>
+            <Link href="#how-it-works" className="btn" style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderColor: 'white', borderWidth: '2px', color: 'white', padding: '1rem 2rem', fontSize: '1.125rem' }}>
+              Learn More
+            </Link>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-16 bg-light" style={{ backgroundColor: 'white' }}>
+        <div className="container">
+          <h2 className="text-center" style={{ fontSize: '2.25rem', marginBottom: '4rem', color: '#1f2937' }}>
+            Why Choose Our Alert System?
+          </h2>
+          
+          <div className="grid grid-cols-3 gap-8">
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.5rem' }}>
+              <div style={{ width: '5rem', height: '5rem', backgroundColor: '#dbeafe', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '2.5rem', width: '2.5rem', color: '#2563eb' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem', color: '#1f2937' }}>Real-Time Alerts</h3>
+              <p style={{ color: '#6b7280' }}>Receive immediate notifications about severe weather events as they develop.</p>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.5rem' }}>
+              <div style={{ width: '5rem', height: '5rem', backgroundColor: '#dbeafe', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '2.5rem', width: '2.5rem', color: '#2563eb' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem', color: '#1f2937' }}>Location Specific</h3>
+              <p style={{ color: '#6b7280' }}>Customize alerts by state to only receive notifications relevant to you.</p>
+            </div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.5rem' }}>
+              <div style={{ width: '5rem', height: '5rem', backgroundColor: '#dbeafe', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
+                <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '2.5rem', width: '2.5rem', color: '#2563eb' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+              </div>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem', color: '#1f2937' }}>Detailed Information</h3>
+              <p style={{ color: '#6b7280' }}>Get comprehensive weather event details including severity, instructions, and timing.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section style={{ padding: '5rem 0', background: 'linear-gradient(to right, #2563eb, #1d4ed8)', color: 'white' }}>
+        <div className="container text-center">
+          <h2 style={{ fontSize: '2.25rem', fontWeight: '700', marginBottom: '1.5rem' }}>Ready to Stay Informed?</h2>
+          <p style={{ fontSize: '1.25rem', marginBottom: '2.5rem', maxWidth: '42rem', margin: '0 auto 2.5rem' }}>
+            Join thousands of users who rely on our service for critical weather updates.
+          </p>
+          <Link href="/subscribe" className="btn btn-secondary" style={{ padding: '1rem 2rem', fontSize: '1.125rem', display: 'inline-block' }}>
+            Subscribe Now
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

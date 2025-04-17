@@ -1,4 +1,4 @@
-# Hurricane Monitor
+# Hurricane Monitor (NWS Weather Alert System)
 
 A real-time weather alert application built with Next.js that displays NOAA weather alerts and allows users to subscribe for notifications.
 
@@ -30,15 +30,27 @@ Hurricane Monitor provides real-time weather alerts from the NOAA (National Ocea
   - `/alerts`: Main page for displaying weather alerts and map
   - `/subscribe`: Form for subscribing to alerts
   - `/api`: Backend API endpoints
+    - `/api/weather/route.ts`: Handles fetching data from NOAA
+    - `/api/email/route.ts`: Handles email subscriptions
+    - `/api/subscriptions/route.ts`: Manages alert subscriptions
 
 - **`/components`**: Reusable React components
   - `Map.tsx`: Leaflet map component for visualizing alerts
+  - `WarningsList.tsx`: Displays the list of weather alerts
+  - `Filters.tsx`: Provides filtering options for alerts
+  - `WeatherChart.tsx`: Displays weather data in chart form
 
 - **`/lib`**: Utility functions and shared code
+  - `noaa.ts`: Functions for interacting with NOAA API
+  - `noaaService.ts`: Service layer for processing NOAA data
+  - `db.ts`: Database connection and utility functions
+  - `emailService.ts`: Email notification functionality
 
 - **`/prisma`**: Database schema and migrations
+  - `schema.prisma`: Defines database models
+  - `/migrations`: Database migration files
 
-- **`/public`**: Static assets
+- **`/public`**: Static assets including images and icons
 
 - **`/styles`**: Global styles including TailwindCSS configuration
   - `globals.css`: Global CSS and Tailwind imports
@@ -51,72 +63,129 @@ Hurricane Monitor provides real-time weather alerts from the NOAA (National Ocea
 - `tsconfig.json`: TypeScript configuration
 - `.env/.env.local`: Environment variables
 
-## Key Components
+## How the App Works
 
-### 1. Map Component (`components/Map.tsx`)
+### Data Flow
 
-The Map component uses react-leaflet to display a map with weather alert geometries. It supports different types of GeoJSON geometries (Point, Polygon, MultiPolygon).
+1. **Data Fetching**: 
+   - The application fetches weather alert data from the NOAA API through `/app/api/weather/route.ts`
+   - This data is then processed and formatted by functions in `/lib/noaaService.ts`
 
-Features:
-- Dynamic map rendering with OpenStreetMap tiles
-- GeoJSON visualization of alert areas
-- Custom map styling for different alert severities
-- Client-side only rendering with Next.js dynamic imports
+2. **Alert Display**:
+   - The main alerts page (`/app/alerts/page.tsx`) receives the processed data
+   - Alerts are displayed in a filterable list via the `WarningsList` component
+   - Users can filter alerts by state using the `Filters` component
 
-### 2. Alerts Page (`app/alerts/page.tsx`)
+3. **Map Visualization**:
+   - When an alert is selected, its geographic data is passed to the `Map` component
+   - The Map component (`/components/Map.tsx`) renders this data as GeoJSON on a Leaflet map
+   - The map automatically centers on the selected alert's location
 
-The main page for displaying and interacting with weather alerts.
+4. **Subscriptions**:
+   - Users can subscribe to alerts via the Subscribe page (`/app/subscribe/page.tsx`)
+   - Subscription requests are processed by `/app/api/subscriptions/route.ts`
+   - Subscriber data is stored in the database via Prisma models
 
-Features:
-- Fetches and displays active weather alerts from NOAA API
-- Filters alerts by state
-- Displays detailed information for selected alerts
-- Visualizes alert areas on an interactive map
-- Automatically refreshes data every 5 minutes
-- Handles different geometry types (Point, Polygon, MultiPolygon)
-- Provides error handling for API failures
+## Guide for Contributors
 
-### 3. Subscribe Page (`app/subscribe/page.tsx`)
+### Adding a New Feature
 
-Allows users to subscribe to weather alerts for specific states or regions.
+1. **New Component**:
+   - Add new React components to the `/components` directory
+   - Follow the existing naming conventions and code style
+   - Import the component where needed
 
-Features:
-- Form to collect user information (email, location preferences)
-- Sends subscription data to backend API
-- Confirmation messages for successful submission
-- Modern, responsive design with proper image handling
+2. **New API Endpoint**:
+   - Add new API routes in the `/app/api` directory
+   - Use the existing pattern of route.ts files
+   - Implement proper error handling and response formatting
 
-## Data Flow
+3. **New Page**:
+   - Create a new directory under `/app` with a `page.tsx` file
+   - The name of the directory will be the URL path
 
-1. User visits the alerts page
-2. Application fetches active weather alerts from NOAA API
-3. Alerts are displayed in a filterable list
-4. User selects an alert to view details
-5. Map automatically centers on the selected alert's location
-6. User can subscribe to similar alerts via the subscribe link
+### Modifying Existing Features
 
-## Error Handling
+1. **Map Customization**:
+   - To change map appearance or behavior, modify `/components/Map.tsx`
+   - Map styling options are defined in the `style` object
+   - Map initialization and tile layers are in the MapContainer component
 
-The application implements robust error handling:
-- API fetch errors are displayed to the user
-- Map geometry parsing includes fallbacks for different GeoJSON types
-- Type safety implemented throughout with TypeScript
-- Default views displayed when data is unavailable
+2. **Alert Display Changes**:
+   - Modify `/components/WarningsList.tsx` to change how alerts are displayed
+   - Style changes can be made via Tailwind classes or inline styles
 
-## Setup and Installation
+3. **Filter Modifications**:
+   - To add or change filter options, update `/components/Filters.tsx`
+   - Add new filter state in the parent component and pass as props
 
-### Prerequisites
+4. **API Changes**:
+   - To change how data is fetched from NOAA, modify `/lib/noaaService.ts`
+   - For changes to API endpoints, update files in `/app/api/`
 
-- Node.js (v14 or higher)
-- npm or yarn
-- Git
+### Database Changes
 
-### Installation
+1. **Schema Changes**:
+   - Modify the schema in `/prisma/schema.prisma`
+   - Run `npx prisma migrate dev --name migration_name` to create a migration
+   - Update related service functions in `/lib/db.ts`
+
+2. **Adding Models**:
+   - Add new models to `/prisma/schema.prisma`
+   - Generate the migration as above
+   - Create corresponding service functions in `/lib/db.ts`
+
+### Environment Variables
+
+The following environment variables are required:
+- `DATABASE_URL`: Connection string for your database
+- `EMAIL_SERVICE`: Email service provider (e.g., SendGrid)
+- `EMAIL_API_KEY`: API key for the email service
+- `NEXT_PUBLIC_SITE_URL`: Public URL of the deployed site
+
+Set these in `.env.local` for development or in your hosting environment for production.
+
+## Common Tasks
+
+### Adding a New Alert Type
+
+1. Update the type definitions in `lib/noaa.ts`
+2. Add processing logic in `lib/noaaService.ts`
+3. Update the display in `components/WarningsList.tsx`
+4. Add map styling in `components/Map.tsx` if needed
+
+### Adding a New Filter Option
+
+1. Add the filter state in `app/alerts/page.tsx`
+2. Update the `Filters.tsx` component to include the new option
+3. Implement the filtering logic in the page component
+
+### Changing Map Provider
+
+1. Update the TileLayer URL in `components/Map.tsx`
+2. Update attribution information
+3. Adjust any styling specific to the map provider
+
+### Creating a New Page
+
+1. Create a new directory under `/app` (e.g., `/app/history`)
+2. Add a `page.tsx` file with your component
+3. Link to it from other parts of the application
+
+## Deployment
+
+The application is currently deployed on [insert deployment platform]. To deploy changes:
+
+1. Push changes to the main branch of the GitHub repository
+2. The deployment platform will automatically build and deploy the changes
+3. Verify the deployment by checking the live site
+
+## Development Workflow
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd hurricane-monitor
+   git clone https://github.com/ykhale/NWS.git
+   cd NWS
    ```
 
 2. Install dependencies:
@@ -124,22 +193,21 @@ The application implements robust error handling:
    npm install
    ```
 
-3. Set up environment variables:
-   Create a `.env.local` file with the necessary environment variables (see `.env` for examples)
-
-4. Run the development server:
+3. Start the development server:
    ```bash
    npm run dev
    ```
 
-5. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+4. Make your changes
+   
+5. Test your changes locally at http://localhost:3000
 
-### Building for Production
-
-```bash
-npm run build
-npm start
-```
+6. Commit and push your changes:
+   ```bash
+   git add .
+   git commit -m "Description of changes"
+   git push
+   ```
 
 ## License
 

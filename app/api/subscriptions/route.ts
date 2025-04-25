@@ -1,8 +1,6 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { sendWelcomeEmail } from '@/lib/emailService';
-
-const prisma = new PrismaClient();
+import { prisma } from '@/lib/prisma';
+// import { sendWelcomeEmail } from '@/lib/emailService';
 
 export async function POST(request: Request) {
   try {
@@ -25,8 +23,8 @@ export async function POST(request: Request) {
       },
     });
 
-    // Send welcome email
-    await sendWelcomeEmail(email, states);
+    // Comment out email sending for now to isolate the issue
+    // await sendWelcomeEmail(email, states);
 
     return NextResponse.json(subscription);
   } catch (error) {

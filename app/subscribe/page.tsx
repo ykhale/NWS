@@ -151,7 +151,8 @@ export default function SubscribePage() {
                         padding: '0.75rem', 
                         border: '1px solid #d1d5db', 
                         borderRadius: '0.375rem',
-                        transition: 'all 0.2s' 
+                        transition: 'all 0.2s',
+                        color: '#111827'
                       }}
                       placeholder="Enter your email address"
                       required
@@ -170,7 +171,8 @@ export default function SubscribePage() {
                       overflowY: 'auto', 
                       padding: '0.5rem', 
                       border: '1px solid #e5e7eb', 
-                      borderRadius: '0.375rem' 
+                      borderRadius: '0.375rem',
+                      color: '#111827'
                     }}>
                       {states.map((state) => (
                         <label

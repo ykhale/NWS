@@ -2,7 +2,16 @@ import { Resend } from 'resend';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
-const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Initialize Resend only if API key is available
+let resend: Resend | null = null;
+try {
+  if (process.env.RESEND_API_KEY) {
+    resend = new Resend(process.env.RESEND_API_KEY);
+  }
+} catch (error) {
+  console.error('Failed to initialize Resend:', error);
+}
 
 interface EmailConfig {
   to: string;
@@ -12,6 +21,10 @@ interface EmailConfig {
 }
 
 export async function sendEmail({ to, subject, text, html }: EmailConfig) {
+  if (!resend) {
+    throw new Error('Email service not properly configured');
+  }
+
   try {
     const { data, error } = await resend.emails.send({
       from: 'Weather Alerts <alerts@yourdomain.com>',

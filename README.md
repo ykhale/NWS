@@ -15,7 +15,7 @@ A web application that provides real-time weather alerts and notifications for s
 - **Frontend**: Next.js, React, TailwindCSS
 - **Backend**: Next.js API Routes
 - **Database**: MySQL with Prisma ORM
-- **Email**: Resend API
+- **Email**: Gmail SMTP
 - **Weather Data**: NOAA API
 
 ## Environment Variables
@@ -26,9 +26,9 @@ The following environment variables need to be set up:
 # Database
 DATABASE_URL="mysql://username:password@host:port/database"
 
-# Email
-RESEND_API_KEY="your-resend-api-key"
-EMAIL_FROM="alerts@yourdomain.com"
+# Email (Gmail)
+GMAIL_USER="your-gmail@gmail.com"
+GMAIL_APP_PASSWORD="your-gmail-app-password"
 
 # Next.js
 NEXT_PUBLIC_APP_URL="https://your-app-domain.com"
@@ -49,6 +49,10 @@ npm install
 
 3. Set up environment variables:
 - Create a `.env.local` file with the required environment variables
+- For Gmail, you'll need to:
+  1. Enable 2-Step Verification in your Google Account
+  2. Generate an App Password at https://myaccount.google.com/apppasswords
+  3. Use the generated App Password in your GMAIL_APP_PASSWORD environment variable
 
 4. Set up the database:
 ```bash

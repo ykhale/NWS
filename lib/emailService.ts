@@ -1,7 +1,8 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface EmailConfig {
   to: string;
@@ -10,28 +11,23 @@ interface EmailConfig {
   html?: string;
 }
 
-// Create a transporter using Gmail SMTP
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_APP_PASSWORD, // Use App Password for better security
-  },
-});
-
 export async function sendEmail({ to, subject, text, html }: EmailConfig) {
   try {
-    const mailOptions = {
-      from: process.env.GMAIL_USER,
+    const { data, error } = await resend.emails.send({
+      from: 'Weather Alerts <alerts@yourdomain.com>',
       to,
       subject,
       text,
       html,
-    };
+    });
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log('Email sent:', info.messageId);
-    return info;
+    if (error) {
+      console.error('Error sending email:', error);
+      throw error;
+    }
+
+    console.log('Email sent:', data?.id);
+    return data;
   } catch (error) {
     console.error('Error sending email:', error);
     throw error;

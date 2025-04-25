@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { sendWeatherAlertEmail } from '@/lib/emailService';
 
+export async function GET() {
+  return NextResponse.json({ message: 'Email API is running' });
+}
+
 export async function POST(request: Request) {
   try {
     // Check if email service is properly configured

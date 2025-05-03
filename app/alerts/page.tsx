@@ -1,3 +1,15 @@
+/**
+ * Alerts Page
+ * 
+ * Displays current weather alerts and warnings.
+ * Features:
+ * - Interactive map showing alert locations
+ * - Filterable list of active alerts
+ * - Detailed alert information
+ * - State-based filtering
+ * - Real-time updates
+ */
+
 'use client';
 
 import { useState, useEffect } from 'react';

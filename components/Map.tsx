@@ -53,6 +53,18 @@ function MapUpdater({ center, zoom }: { center: [number, number]; zoom: number }
   return null;
 }
 
+/**
+ * Map Component
+ * 
+ * Interactive map component using Leaflet.js.
+ * Features:
+ * - Displays weather alerts on map
+ * - Supports different geometry types (Point, Polygon, MultiPolygon)
+ * - Interactive markers with popups
+ * - Dynamic center and zoom controls
+ * - Responsive design
+ */
+
 const Map = ({ center, zoom, warning }: MapProps) => {
   useEffect(() => {
     // This is needed to fix the map rendering issues in Next.js

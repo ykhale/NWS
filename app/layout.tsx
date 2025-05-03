@@ -1,3 +1,15 @@
+/**
+ * Root Layout Component
+ * 
+ * This is the root layout component that wraps all pages in the application.
+ * It provides:
+ * - Global styles and fonts
+ * - Theme support (dark/light mode)
+ * - Authentication context
+ * - Toast notifications
+ * - Navigation and footer
+ */
+
 import type { Metadata } from 'next';
 import './globals.css';
 import Link from 'next/link';

@@ -1,92 +1,194 @@
-# NOAA Weather Service App
+# Hurricane & Weather Monitor
 
-A web application that provides real-time weather alerts and notifications for severe weather conditions across the United States.
+A real-time weather alert system that helps users stay informed about severe weather conditions across the United States.
 
-## Features
+## 🌟 Overview
 
-- Subscribe to weather alerts for specific states
-- Receive email notifications for severe weather events
-- View current and historical weather data
-- Interactive maps showing weather patterns
-- User-friendly dashboard for managing subscriptions
+This application provides real-time weather alerts and warnings through an interactive map interface and email notifications. Users can:
+- View current weather alerts on an interactive map
+- Subscribe to receive email notifications for specific states
+- Get detailed information about weather events
+- Track severe weather conditions in their area
 
-## Tech Stack
+## 📱 User Interface
 
-- **Frontend**: Next.js, React, TailwindCSS
-- **Backend**: Next.js API Routes
-- **Database**: MySQL with Prisma ORM
-- **Email**: Gmail SMTP
-- **Weather Data**: NOAA API
+### Home Page (`/`)
+The main landing page that introduces users to the weather alert system. It features:
+- A hero section explaining the service
+- Key features and benefits
+- Call-to-action buttons for subscribing
+- Visual examples of the alert system
 
-## Environment Variables
+### Alerts Page (`/alerts`)
+The interactive map page where users can:
+- View all current weather alerts on a map
+- Filter alerts by state
+- Click on alerts to see detailed information
+- See the severity and type of each weather event
+- View the affected areas and timing of alerts
 
-The following environment variables need to be set up:
+### Subscribe Page (`/subscribe`)
+Where users can:
+- Enter their email address
+- Select which states they want to monitor
+- Choose their alert preferences
+- Manage their subscription settings
 
-```
-# Database
-DATABASE_URL="mysql://username:password@host:port/database"
+## 🏗️ Project Structure
 
-# Email (Gmail)
-GMAIL_USER="your-gmail@gmail.com"
-GMAIL_APP_PASSWORD="your-gmail-app-password"
+### Frontend Components
+- `app/layout.tsx`: The main layout component that wraps all pages
+- `app/page.tsx`: The home page component
+- `app/alerts/page.tsx`: The alerts page with map and alert list
+- `app/subscribe/page.tsx`: The subscription management page
+- `components/Map.tsx`: Interactive map component using Leaflet.js
+- `components/WarningsList.tsx`: List of current weather warnings
+- `components/Navbar.tsx`: Navigation bar component
+- `components/Footer.tsx`: Footer component
 
-# Next.js
-NEXT_PUBLIC_APP_URL="https://your-app-domain.com"
-```
+### Backend Services
+- `lib/weatherService.ts`: Handles weather data fetching and processing
+- `lib/emailService.ts`: Manages email notifications and subscriptions
+- `lib/db.ts`: Database connection and operations
 
-## Development
+### Configuration Files
+- `next.config.js`: Next.js configuration
+- `package.json`: Project dependencies and scripts
+- `tsconfig.json`: TypeScript configuration
+- `.env`: Environment variables (not committed to git)
 
-1. Clone the repository:
-```bash
-git clone https://github.com/yourusername/nws.git
-cd nws
-```
+## 🔧 Technical Details
 
+### Data Sources
+- National Weather Service (NWS) API
+- NOAA weather data
+- OpenStreetMap for map tiles
+
+### Key Technologies
+- Next.js 14: React framework for server-side rendering
+- TypeScript: Type-safe JavaScript
+- Leaflet.js: Interactive maps
+- Tailwind CSS: Styling
+- MongoDB: Database
+- Nodemailer: Email service
+
+### API Integration
+The application integrates with:
+- NOAA/NWS API for weather data
+- Email service providers for notifications
+- Map services for visualization
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+- MongoDB database
+- Email service credentials
+
+### Installation
+1. Clone the repository
 2. Install dependencies:
-```bash
-npm install
-```
-
+   ```bash
+   npm install
+   ```
 3. Set up environment variables:
-- Create a `.env.local` file with the required environment variables
-- For Gmail, you'll need to:
-  1. Enable 2-Step Verification in your Google Account
-  2. Generate an App Password at https://myaccount.google.com/apppasswords
-  3. Use the generated App Password in your GMAIL_APP_PASSWORD environment variable
+   ```bash
+   cp .env.example .env
+   ```
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-4. Set up the database:
-```bash
-npm run prisma:generate
-npm run db:push
-```
+### Environment Variables
+- `MONGODB_URI`: MongoDB connection string
+- `EMAIL_SERVICE`: Email service provider
+- `EMAIL_USER`: Email account username
+- `EMAIL_PASSWORD`: Email account password
+- `NEXT_PUBLIC_MAPBOX_TOKEN`: Mapbox API token
 
-5. Run the development server:
-```bash
-npm run dev
-```
+## 📧 Email Notifications
 
-## Deployment
+The system sends two types of emails:
+1. Welcome Email: When users first subscribe
+2. Alert Emails: When severe weather is detected in their selected states
 
-This application is configured for deployment on Vercel:
+Email templates include:
+- Event type and severity
+- Affected areas
+- Timing information
+- Safety instructions
+- Links to more information
 
-1. Connect your GitHub repository to Vercel
-2. Set up the required environment variables in your Vercel project settings
-3. Deploy with the default settings
+## 🗺️ Map Features
 
-## API Documentation
+The interactive map includes:
+- Real-time weather alert markers
+- Different colors for different alert types
+- Clickable markers with detailed information
+- Zoom and pan controls
+- State boundaries
+- Automatic centering on selected alerts
 
-### POST /api/subscriptions
-- Subscribe to weather alerts for specific states
-- Request body: `{ email: string, states: string[] }`
+## 🔍 Alert Types
 
-### GET /api/subscriptions
-- Get all subscriptions or a specific subscription by email
-- Query parameters: `email` (optional)
+The system monitors for:
+- Severe Thunderstorms
+- Tornadoes
+- Floods
+- Winter Storms
+- Hurricanes
+- Tropical Storms
+- Heat Waves
+- Wildfires
 
-### POST /api/email
-- Send a test email alert
-- Request body: `{ email: string, alert: object }`
+## 🛠️ Development
 
-## License
+### Available Scripts
+- `npm run dev`: Start development server
+- `npm run build`: Build for production
+- `npm start`: Start production server
+- `npm test`: Run tests
+- `npm run lint`: Run linter
 
-MIT
+### Code Style
+- ESLint for code quality
+- Prettier for formatting
+- TypeScript for type safety
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## 📝 License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## 🙏 Acknowledgments
+
+- National Weather Service for weather data
+- OpenStreetMap for map tiles
+- NOAA for weather information
+- All contributors to the project
+
+## 📞 Support
+
+For support, please:
+1. Check the documentation
+2. Search existing issues
+3. Create a new issue if needed
+
+## 📈 Future Improvements
+
+Planned features:
+- Mobile app version
+- SMS notifications
+- Custom alert thresholds
+- Historical data analysis
+- More detailed weather information
+- Social media integration

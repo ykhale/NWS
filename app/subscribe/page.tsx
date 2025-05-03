@@ -1,3 +1,15 @@
+/**
+ * Subscribe Page
+ * 
+ * Allows users to subscribe to weather alerts.
+ * Features:
+ * - State selection for alerts
+ * - Email subscription form
+ * - Alert type preferences
+ * - Subscription management
+ * - User authentication integration
+ */
+
 'use client';
 
 import { useState } from 'react';

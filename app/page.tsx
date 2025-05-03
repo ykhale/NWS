@@ -1,3 +1,14 @@
+/**
+ * Home Page
+ * 
+ * The main landing page of the application.
+ * Features:
+ * - Hero section with call-to-action
+ * - Overview of weather alert system
+ * - Key features and benefits
+ * - Testimonials or statistics
+ */
+
 'use client';
 
 import { useState } from 'react';

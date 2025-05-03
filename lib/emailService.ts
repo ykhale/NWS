@@ -15,6 +15,18 @@ interface EmailConfig {
   html?: string;
 }
 
+/**
+ * Email Service
+ * 
+ * Handles all email-related functionality.
+ * Features:
+ * - Welcome email for new subscribers
+ * - Weather alert notifications
+ * - Email template management
+ * - Error handling and logging
+ * - Rate limiting and queue management
+ */
+
 const EmailService = {
   async sendEmail({ to, subject, text, html }: EmailConfig) {
     try {

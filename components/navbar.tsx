@@ -56,11 +56,11 @@ export function Navbar() {
         </div>
         <div className="ml-auto flex items-center space-x-4">
           {session ? (
-            <Button variant="outline" asChild>
+            <Button className="border border-input bg-background hover:bg-accent hover:text-accent-foreground" asChild>
               <Link href="/api/auth/signout">Sign Out</Link>
             </Button>
           ) : (
-            <Button variant="outline" asChild>
+            <Button className="border border-input bg-background hover:bg-accent hover:text-accent-foreground" asChild>
               <Link href="/api/auth/signin">Sign In</Link>
             </Button>
           )}

@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -27,7 +27,7 @@ interface EmailConfig {
  * - Rate limiting and queue management
  */
 
-const EmailService = {
+export const EmailService = {
   async sendEmail({ to, subject, text, html }: EmailConfig) {
     try {
       const mailOptions = {
@@ -134,4 +134,4 @@ const EmailService = {
   }
 };
 
-module.exports = EmailService; 
+export const { sendWelcomeEmail, sendWeatherAlertEmail, checkAndSendStateAlerts } = EmailService; 

@@ -117,121 +117,70 @@ export default function SubscribePage() {
             overflow: 'hidden' 
           }}>
             <div className="flex flex-col md:flex-row">
-              <div className="bg-blue-700 p-8 text-white md:w-1/3">
-                <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>Why Subscribe?</h2>
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  <li style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '1.5rem', width: '1.5rem', marginRight: '0.5rem', color: '#facc15', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Immediate notifications about severe weather</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '1.5rem', width: '1.5rem', marginRight: '0.5rem', color: '#facc15', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Customized by state to reduce alert fatigue</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '1.5rem', width: '1.5rem', marginRight: '0.5rem', color: '#facc15', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Detailed information about each event</span>
-                  </li>
-                  <li style={{ display: 'flex', alignItems: 'flex-start' }}>
-                    <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '1.5rem', width: '1.5rem', marginRight: '0.5rem', color: '#facc15', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Free service with no obligations</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div className="p-8 md:w-2/3">
-                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                  <div>
-                    <label htmlFor="email" style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
-                      Email Address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+              <div className="p-8 flex-1">
+                <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>Select States</h2>
+                <div style={{ 
+                  display: 'grid', 
+                  gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
+                  gap: '0.5rem' 
+                }}>
+                  {states.map((state) => (
+                    <label
+                      key={state}
                       style={{ 
-                        width: '100%', 
-                        padding: '0.75rem', 
-                        border: '1px solid #d1d5db', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        padding: '0.5rem', 
                         borderRadius: '0.375rem',
-                        transition: 'all 0.2s',
-                        color: '#111827'
+                        cursor: 'pointer',
+                        backgroundColor: selectedStates.includes(state) ? '#dbeafe' : 'transparent'
                       }}
-                      placeholder="Enter your email address"
-                      required
-                    />
-                  </div>
-
-                  <div>
-                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
-                      Select States <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>({selectedStates.length} selected)</span>
+                    >
+                      <input
+                        type="checkbox"
+                        checked={selectedStates.includes(state)}
+                        onChange={() => handleStateToggle(state)}
+                        style={{ marginRight: '0.5rem' }}
+                      />
+                      {state}
                     </label>
-                    <div style={{ 
-                      display: 'grid', 
-                      gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
-                      gap: '0.5rem', 
-                      maxHeight: '20rem', 
-                      overflowY: 'auto', 
-                      padding: '0.5rem', 
-                      border: '1px solid #e5e7eb', 
-                      borderRadius: '0.375rem',
-                      color: '#111827'
-                    }}>
-                      {states.map((state) => (
-                        <label
-                          key={state}
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            padding: '0.5rem', 
-                            border: '1px solid', 
-                            borderColor: selectedStates.includes(state) ? '#3b82f6' : '#e5e7eb',
-                            borderRadius: '0.375rem', 
-                            cursor: 'pointer',
-                            backgroundColor: selectedStates.includes(state) ? '#eff6ff' : 'transparent',
-                            color: selectedStates.includes(state) ? '#1d4ed8' : 'inherit',
-                            transition: 'all 0.2s'
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={selectedStates.includes(state)}
-                            onChange={() => handleStateToggle(state)}
-                            style={{ marginRight: '0.5rem' }}
-                          />
-                          {state}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
+                  ))}
+                </div>
 
-                  <button
-                    type="submit"
-                    disabled={isLoading}
+                <div style={{ marginTop: '2rem' }}>
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem' }}>Your Email</h2>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email address"
                     style={{ 
                       width: '100%', 
-                      padding: '0.75rem 1rem', 
+                      padding: '0.75rem', 
                       borderRadius: '0.375rem', 
-                      color: 'white', 
-                      fontSize: '1.125rem', 
-                      fontWeight: '500',
-                      backgroundColor: isLoading ? '#60a5fa' : '#2563eb',
-                      cursor: isLoading ? 'not-allowed' : 'pointer',
-                      transition: 'background-color 0.2s'
+                      border: '1px solid #e5e7eb' 
                     }}
-                  >
-                    {isLoading ? 'Processing...' : 'Subscribe to Alerts'}
-                  </button>
-                </form>
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  style={{ 
+                    width: '100%', 
+                    padding: '0.75rem 1rem', 
+                    borderRadius: '0.375rem', 
+                    color: 'white', 
+                    fontSize: '1.125rem', 
+                    fontWeight: '500',
+                    backgroundColor: isLoading ? '#60a5fa' : '#2563eb',
+                    cursor: isLoading ? 'not-allowed' : 'pointer',
+                    transition: 'background-color 0.2s',
+                    marginTop: '1rem'
+                  }}
+                >
+                  {isLoading ? 'Processing...' : 'Subscribe to Alerts'}
+                </button>
               </div>
             </div>
           </div>

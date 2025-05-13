@@ -55,14 +55,14 @@ export default function AlertsPage() {
     async function fetchAlerts() {
       try {
         const response = await fetch('https://api.weather.gov/alerts/active');
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch alerts: ${response.statusText}`);
         }
 
         const data = await response.json();
         setAlerts(data.features);
-        
+
         // Extract unique states from alerts
         const stateSet = new Set<string>();
         data.features.forEach((alert: NOAAAlert) => {
@@ -70,7 +70,7 @@ export default function AlertsPage() {
           if (state) stateSet.add(state);
         });
         setStates(Array.from(stateSet).sort());
-        
+
         setError(null);
       } catch (err) {
         console.error('Error fetching alerts:', err);
@@ -90,7 +90,7 @@ export default function AlertsPage() {
     // Update map when an alert is selected
     if (selectedAlert && selectedAlert.geometry) {
       const { type } = selectedAlert.geometry;
-      
+
       try {
         // Handle different geometry types
         if (type === 'Point') {
@@ -116,8 +116,8 @@ export default function AlertsPage() {
 
   // Helper functions for different geometry types
   const handlePointGeometry = (coordinates: any) => {
-    if (Array.isArray(coordinates) && coordinates.length === 2 && 
-        typeof coordinates[0] === 'number' && typeof coordinates[1] === 'number') {
+    if (Array.isArray(coordinates) && coordinates.length === 2 &&
+      typeof coordinates[0] === 'number' && typeof coordinates[1] === 'number') {
       setMapCenter([coordinates[1], coordinates[0]]);
       setMapZoom(8);
     } else {
@@ -132,14 +132,14 @@ export default function AlertsPage() {
         // Calculate center of polygon (simple average of coordinates)
         let sumLat = 0;
         let sumLng = 0;
-        
+
         ring.forEach(coord => {
           if (Array.isArray(coord) && coord.length >= 2) {
             sumLat += coord[1];
             sumLng += coord[0];
           }
         });
-        
+
         if (ring.length > 0) {
           setMapCenter([sumLat / ring.length, sumLng / ring.length]);
           setMapZoom(7);
@@ -155,26 +155,26 @@ export default function AlertsPage() {
   };
 
   const handleMultiPolygonGeometry = (coordinates: any) => {
-    if (Array.isArray(coordinates) && coordinates.length > 0 && 
-        Array.isArray(coordinates[0]) && coordinates[0].length > 0) {
+    if (Array.isArray(coordinates) && coordinates.length > 0 &&
+      Array.isArray(coordinates[0]) && coordinates[0].length > 0) {
       const firstPolygon = coordinates[0];
-      
-      if (Array.isArray(firstPolygon) && firstPolygon.length > 0 && 
-          Array.isArray(firstPolygon[0])) {
+
+      if (Array.isArray(firstPolygon) && firstPolygon.length > 0 &&
+        Array.isArray(firstPolygon[0])) {
         const ring = firstPolygon[0];
-        
+
         if (Array.isArray(ring) && ring.length > 0) {
           // Calculate center of the first polygon (simple average of coordinates)
           let sumLat = 0;
           let sumLng = 0;
-          
+
           ring.forEach(coord => {
             if (Array.isArray(coord) && coord.length >= 2) {
               sumLat += coord[1];
               sumLng += coord[0];
             }
           });
-          
+
           if (ring.length > 0) {
             setMapCenter([sumLat / ring.length, sumLng / ring.length]);
             setMapZoom(6); // Zoom out a bit more for MultiPolygon which tend to cover larger areas
@@ -220,9 +220,9 @@ export default function AlertsPage() {
       {/* Hero Section */}
       <section style={{ position: 'relative', padding: '3rem 0', backgroundColor: '#1e40af', color: 'white' }}>
         <div style={{ position: 'absolute', inset: 0, opacity: 0.3, zIndex: 0 }}>
-          <Image 
-            src="https://images.unsplash.com/photo-1534274988757-a28bf1a57c17" 
-            alt="Storm clouds" 
+          <Image
+            src="https://images.unsplash.com/photo-1534274988757-a28bf1a57c17"
+            alt="Storm clouds"
             fill
             sizes="100vw"
             style={{ objectFit: 'cover' }}
@@ -242,13 +242,13 @@ export default function AlertsPage() {
         <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 1rem' }}>
           {loading ? (
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '16rem' }}>
-              <div style={{ 
-                width: '3rem', 
-                height: '3rem', 
-                borderRadius: '50%', 
-                border: '4px solid #e5e7eb', 
+              <div style={{
+                width: '3rem',
+                height: '3rem',
+                borderRadius: '50%',
+                border: '4px solid #e5e7eb',
                 borderTopColor: '#3b82f6',
-                animation: 'spin 1s linear infinite' 
+                animation: 'spin 1s linear infinite'
               }}></div>
             </div>
           ) : error ? (
@@ -275,10 +275,10 @@ export default function AlertsPage() {
                     id="state-filter"
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)}
-                    style={{ 
-                      backgroundColor: 'white', 
-                      border: '1px solid #d1d5db', 
-                      borderRadius: '0.375rem', 
+                    style={{
+                      backgroundColor: 'white',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '0.375rem',
                       padding: '0.5rem 1rem',
                       color: '#111827'
                     }}
@@ -295,10 +295,10 @@ export default function AlertsPage() {
 
               <div style={{ display: 'grid', gridTemplateColumns: '350px 1fr', gap: '1.5rem' }}>
                 {/* Alert List */}
-                <div style={{ 
-                  backgroundColor: 'white', 
-                  borderRadius: '0.5rem', 
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)', 
+                <div style={{
+                  backgroundColor: 'white',
+                  borderRadius: '0.5rem',
+                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                   padding: '1rem',
                   height: '700px',
                   overflow: 'auto'
@@ -306,7 +306,7 @@ export default function AlertsPage() {
                   <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid #e5e7eb' }}>
                     Alert List
                   </h3>
-                  
+
                   {filteredAlerts.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '2rem 0' }}>
                       <p style={{ color: '#6b7280' }}>No active alerts found.</p>
@@ -317,21 +317,21 @@ export default function AlertsPage() {
                   ) : (
                     <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                       {filteredAlerts.map((alert) => {
-                        const bgColor = alert.properties.severity === 'Extreme' ? '#fee2e2' : 
-                                        alert.properties.severity === 'Severe' ? '#ffedd5' : 
-                                        '#fef3c7';
-                        const borderColor = alert.properties.severity === 'Extreme' ? '#ef4444' : 
-                                           alert.properties.severity === 'Severe' ? '#f97316' : 
-                                           '#f59e0b';
-                        const textColor = alert.properties.severity === 'Extreme' ? '#991b1b' : 
-                                         alert.properties.severity === 'Severe' ? '#9a3412' : 
-                                         '#92400e';
-                        
+                        const bgColor = alert.properties.severity === 'Extreme' ? '#fee2e2' :
+                          alert.properties.severity === 'Severe' ? '#ffedd5' :
+                            '#fef3c7';
+                        const borderColor = alert.properties.severity === 'Extreme' ? '#ef4444' :
+                          alert.properties.severity === 'Severe' ? '#f97316' :
+                            '#f59e0b';
+                        const textColor = alert.properties.severity === 'Extreme' ? '#991b1b' :
+                          alert.properties.severity === 'Severe' ? '#9a3412' :
+                            '#92400e';
+
                         return (
-                          <li 
+                          <li
                             key={alert.id}
                             onClick={() => setSelectedAlert(alert)}
-                            style={{ 
+                            style={{
                               padding: '0.75rem',
                               borderLeft: `4px solid ${borderColor}`,
                               backgroundColor: selectedAlert?.id === alert.id ? `${bgColor}50` : bgColor,
@@ -356,10 +356,10 @@ export default function AlertsPage() {
                 {/* Map and Alert Details */}
                 <div>
                   {/* Map Component */}
-                  <div style={{ 
-                    backgroundColor: 'white', 
-                    borderRadius: '0.5rem', 
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)', 
+                  <div style={{
+                    backgroundColor: 'white',
+                    borderRadius: '0.5rem',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                     marginBottom: '1.5rem',
                     height: '400px'
                   }}>
@@ -367,35 +367,35 @@ export default function AlertsPage() {
                   </div>
 
                   {/* Alert Details */}
-                  <div style={{ 
-                    backgroundColor: 'white', 
-                    borderRadius: '0.5rem', 
-                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)', 
+                  <div style={{
+                    backgroundColor: 'white',
+                    borderRadius: '0.5rem',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
                     padding: '1.5rem'
                   }}>
                     {selectedAlert ? (
                       <div>
-                        <div style={{ 
-                          display: 'inline-block', 
-                          padding: '0.25rem 0.75rem', 
-                          borderRadius: '9999px', 
-                          fontSize: '0.875rem', 
-                          fontWeight: '600', 
+                        <div style={{
+                          display: 'inline-block',
+                          padding: '0.25rem 0.75rem',
+                          borderRadius: '9999px',
+                          fontSize: '0.875rem',
+                          fontWeight: '600',
                           marginBottom: '1rem',
-                          backgroundColor: selectedAlert.properties.severity === 'Extreme' ? '#fee2e2' : 
-                                           selectedAlert.properties.severity === 'Severe' ? '#ffedd5' : 
-                                           '#fef3c7',
-                          color: selectedAlert.properties.severity === 'Extreme' ? '#991b1b' : 
-                                 selectedAlert.properties.severity === 'Severe' ? '#9a3412' : 
-                                 '#92400e'
+                          backgroundColor: selectedAlert.properties.severity === 'Extreme' ? '#fee2e2' :
+                            selectedAlert.properties.severity === 'Severe' ? '#ffedd5' :
+                              '#fef3c7',
+                          color: selectedAlert.properties.severity === 'Extreme' ? '#991b1b' :
+                            selectedAlert.properties.severity === 'Severe' ? '#9a3412' :
+                              '#92400e'
                         }}>
                           {selectedAlert.properties.severity} Severity
                         </div>
-                        
+
                         <h2 style={{ fontSize: '1.5rem', fontWeight: '700', marginBottom: '1rem' }}>
                           {selectedAlert.properties.event}
                         </h2>
-                        
+
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
                           <div>
                             <h3 style={{ color: '#6b7280', fontSize: '0.875rem' }}>Area</h3>
@@ -410,7 +410,7 @@ export default function AlertsPage() {
                             </div>
                           </div>
                         </div>
-                        
+
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
                           <div>
                             <h3 style={{ color: '#6b7280', fontSize: '0.875rem' }}>Effective</h3>
@@ -425,21 +425,21 @@ export default function AlertsPage() {
                             </p>
                           </div>
                         </div>
-                        
+
                         <div style={{ marginBottom: '1.5rem' }}>
                           <h3 style={{ color: '#374151', fontWeight: '600', marginBottom: '0.5rem' }}>Description</h3>
                           <p style={{ backgroundColor: '#f9fafb', padding: '1rem', borderRadius: '0.375rem', color: '#374151' }}>
                             {selectedAlert.properties.description}
                           </p>
                         </div>
-                        
+
                         {selectedAlert.properties.instruction && (
                           <div style={{ marginBottom: '1.5rem' }}>
                             <h3 style={{ color: '#374151', fontWeight: '600', marginBottom: '0.5rem' }}>Instructions</h3>
-                            <p style={{ 
-                              backgroundColor: '#f9fafb', 
-                              padding: '1rem', 
-                              borderRadius: '0.375rem', 
+                            <p style={{
+                              backgroundColor: '#f9fafb',
+                              padding: '1rem',
+                              borderRadius: '0.375rem',
                               color: '#374151',
                               borderLeft: '4px solid #3b82f6'
                             }}>
@@ -447,7 +447,7 @@ export default function AlertsPage() {
                             </p>
                           </div>
                         )}
-                        
+
                         <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
                           <Link
                             href={`/subscribe?state=${selectedAlert.properties.areaDesc.split(',').pop()?.trim()}`}
@@ -466,12 +466,12 @@ export default function AlertsPage() {
                         </div>
                       </div>
                     ) : (
-                      <div style={{ 
-                        display: 'flex', 
-                        flexDirection: 'column', 
-                        alignItems: 'center', 
-                        justifyContent: 'center', 
-                        color: '#6b7280', 
+                      <div style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: '#6b7280',
                         padding: '3rem 0',
                         textAlign: 'center'
                       }}>
@@ -499,14 +499,14 @@ export default function AlertsPage() {
           <p style={{ fontSize: '1.25rem', color: '#4b5563', marginBottom: '2rem', maxWidth: '48rem', margin: '0 auto 2rem' }}>
             Get personalized weather alerts delivered straight to your inbox. Subscribe to our alert system today.
           </p>
-          <Link 
-            href="/subscribe" 
+          <Link
+            href="/subscribe"
             style={{
               display: 'inline-block',
-              backgroundColor: '#2563eb', 
-              color: 'white', 
-              padding: '0.75rem 2rem', 
-              borderRadius: '0.375rem', 
+              backgroundColor: '#2563eb',
+              color: 'white',
+              padding: '0.75rem 2rem',
+              borderRadius: '0.375rem',
               fontWeight: '600',
               textDecoration: 'none',
               transition: 'background-color 0.2s'

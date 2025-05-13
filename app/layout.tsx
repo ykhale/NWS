@@ -56,6 +56,7 @@ export default function RootLayout({
               <nav className="flex">
                 <Link href="/">Home</Link>
                 <Link href="/alerts">Current Alerts</Link>
+                <Link href="/heat-index">Heat Index</Link>
                 <Link href="/subscribe">Subscribe</Link>
               </nav>
             </div>
@@ -109,6 +110,11 @@ export default function RootLayout({
                   <li style={{ marginBottom: '0.5rem' }}>
                     <Link href="/alerts" style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}>
                       Current Alerts
+                    </Link>
+                  </li>
+                  <li style={{ marginBottom: '0.5rem' }}>
+                    <Link href="/heat-index" style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}>
+                      Heat Index
                     </Link>
                   </li>
                   <li style={{ marginBottom: '0.5rem' }}>

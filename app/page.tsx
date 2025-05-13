@@ -76,19 +76,58 @@ export default function Home() {
   return (
     <div>
       {/* Hero Section */}
-      <section className="hero" style={{ backgroundColor: '#1e40af', minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="hero-content">
-          <h1 style={{ fontSize: '3rem', marginBottom: '1.5rem' }}>
+      <section className="hero" style={{ 
+        backgroundColor: '#1e40af', 
+        minHeight: '80vh', 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center',
+        padding: '1rem'
+      }}>
+        <div className="hero-content" style={{ width: '100%', maxWidth: '800px' }}>
+          <h1 style={{ 
+            fontSize: 'clamp(2rem, 5vw, 3rem)', 
+            marginBottom: '1.5rem',
+            lineHeight: '1.2'
+          }}>
             Stay Safe with Real-Time Weather Alerts
           </h1>
-          <p style={{ fontSize: '1.5rem', marginBottom: '2rem', maxWidth: '42rem', margin: '0 auto 2rem' }}>
+          <p style={{ 
+            fontSize: 'clamp(1.125rem, 3vw, 1.5rem)', 
+            marginBottom: '2rem', 
+            maxWidth: '42rem', 
+            margin: '0 auto 2rem',
+            padding: '0 1rem'
+          }}>
             Get instant notifications about severe weather events directly to your inbox.
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'center' }}>
-            <Link href="/subscribe" className="btn btn-secondary" style={{ padding: '1rem 2rem', fontSize: '1.125rem' }}>
+          <div style={{ 
+            display: 'flex', 
+            flexDirection: 'column', 
+            gap: '1rem', 
+            alignItems: 'center',
+            padding: '0 1rem'
+          }}>
+            <Link href="/subscribe" className="btn btn-secondary" style={{ 
+              padding: '1rem 2rem', 
+              fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+              width: '100%',
+              maxWidth: '300px',
+              textAlign: 'center'
+            }}>
               Subscribe Now
             </Link>
-            <Link href="#how-it-works" className="btn" style={{ backgroundColor: 'rgba(255,255,255,0.2)', borderColor: 'white', borderWidth: '2px', color: 'white', padding: '1rem 2rem', fontSize: '1.125rem' }}>
+            <Link href="#how-it-works" className="btn" style={{ 
+              backgroundColor: 'rgba(255,255,255,0.2)', 
+              borderColor: 'white', 
+              borderWidth: '2px', 
+              color: 'white', 
+              padding: '1rem 2rem', 
+              fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+              width: '100%',
+              maxWidth: '300px',
+              textAlign: 'center'
+            }}>
               Learn More
             </Link>
           </div>
@@ -98,11 +137,16 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-16 bg-light" style={{ backgroundColor: 'white' }}>
         <div className="container">
-          <h2 className="text-center" style={{ fontSize: '2.25rem', marginBottom: '4rem', color: '#1f2937' }}>
+          <h2 className="text-center" style={{ 
+            fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', 
+            marginBottom: '4rem', 
+            color: '#1f2937',
+            padding: '0 1rem'
+          }}>
             Why Choose Our Alert System?
           </h2>
           
-          <div className="grid grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '2rem', padding: '0 1rem' }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', padding: '1.5rem' }}>
               <div style={{ width: '5rem', height: '5rem', backgroundColor: '#dbeafe', borderRadius: '9999px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
                 <svg xmlns="http://www.w3.org/2000/svg" style={{ height: '2.5rem', width: '2.5rem', color: '#2563eb' }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -138,13 +182,36 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section style={{ padding: '5rem 0', background: 'linear-gradient(to right, #2563eb, #1d4ed8)', color: 'white' }}>
+      <section style={{ 
+        padding: 'clamp(2rem, 5vw, 5rem) 1rem', 
+        background: 'linear-gradient(to right, #2563eb, #1d4ed8)', 
+        color: 'white' 
+      }}>
         <div className="container text-center">
-          <h2 style={{ fontSize: '2.25rem', fontWeight: '700', marginBottom: '1.5rem' }}>Ready to Stay Informed?</h2>
-          <p style={{ fontSize: '1.25rem', marginBottom: '2.5rem', maxWidth: '42rem', margin: '0 auto 2.5rem' }}>
+          <h2 style={{ 
+            fontSize: 'clamp(1.75rem, 4vw, 2.25rem)', 
+            fontWeight: '700', 
+            marginBottom: '1.5rem' 
+          }}>
+            Ready to Stay Informed?
+          </h2>
+          <p style={{ 
+            fontSize: 'clamp(1rem, 3vw, 1.25rem)', 
+            marginBottom: '2.5rem', 
+            maxWidth: '42rem', 
+            margin: '0 auto 2.5rem',
+            padding: '0 1rem'
+          }}>
             Join thousands of users who rely on our service for critical weather updates.
           </p>
-          <Link href="/subscribe" className="btn btn-secondary" style={{ padding: '1rem 2rem', fontSize: '1.125rem', display: 'inline-block' }}>
+          <Link href="/subscribe" className="btn btn-secondary" style={{ 
+            padding: '1rem 2rem', 
+            fontSize: 'clamp(1rem, 2vw, 1.125rem)',
+            display: 'inline-block',
+            width: '100%',
+            maxWidth: '300px',
+            textAlign: 'center'
+          }}>
             Subscribe Now
           </Link>
         </div>

@@ -18,15 +18,15 @@ import { useState } from 'react';
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col">
-        <header className="relative">
+        <header className="relative bg-white shadow-sm">
           <div className="container">
             <div className="flex justify-between items-center py-4 px-4">
               <div className="flex items-center">
@@ -131,11 +131,11 @@ export default function RootLayout({
           </div>
         </header>
 
-        <main style={{ flex: '1 0 auto' }}>
+        <main className="flex-1">
           {children}
         </main>
 
-        <footer>
+        <footer className="bg-gray-900 text-white">
           <div className="container py-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 px-4">
               <div>
@@ -160,33 +160,33 @@ export default function RootLayout({
                     Emergency Weather Reporter
                   </span>
                 </div>
-                <p style={{ marginTop: '1rem', color: '#9ca3af' }}>
+                <p className="mt-4 text-gray-400">
                   Stay informed about severe weather with real-time email alerts customized to your location.
                 </p>
               </div>
               
               <div>
-                <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem' }}>
+                <h3 className="text-lg font-semibold mb-4">
                   Quick Links
                 </h3>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                  <li style={{ marginBottom: '0.5rem' }}>
-                    <Link href="/" style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}>
+                <ul className="space-y-2">
+                  <li>
+                    <Link href="/" className="text-gray-400 hover:text-white transition-colors">
                       Home
                     </Link>
                   </li>
-                  <li style={{ marginBottom: '0.5rem' }}>
-                    <Link href="/alerts" style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}>
+                  <li>
+                    <Link href="/alerts" className="text-gray-400 hover:text-white transition-colors">
                       Current Alerts
                     </Link>
                   </li>
-                  <li style={{ marginBottom: '0.5rem' }}>
-                    <Link href="/heat-index" style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}>
+                  <li>
+                    <Link href="/heat-index" className="text-gray-400 hover:text-white transition-colors">
                       Heat Index
                     </Link>
                   </li>
-                  <li style={{ marginBottom: '0.5rem' }}>
-                    <Link href="/subscribe" style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}>
+                  <li>
+                    <Link href="/subscribe" className="text-gray-400 hover:text-white transition-colors">
                       Subscribe
                     </Link>
                   </li>
@@ -194,26 +194,26 @@ export default function RootLayout({
               </div>
               
               <div>
-                <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem' }}>
+                <h3 className="text-lg font-semibold mb-4">
                   Data Sources
                 </h3>
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                  <li style={{ marginBottom: '0.5rem' }}>
+                <ul className="space-y-2">
+                  <li>
                     <a 
                       href="https://www.weather.gov" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}
+                      className="text-gray-400 hover:text-white transition-colors"
                     >
                       National Weather Service
                     </a>
                   </li>
-                  <li style={{ marginBottom: '0.5rem' }}>
+                  <li>
                     <a 
                       href="https://www.nhc.noaa.gov" 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      style={{ color: '#9ca3af', textDecoration: 'none', transition: 'color 0.2s' }}
+                      className="text-gray-400 hover:text-white transition-colors"
                     >
                       National Hurricane Center
                     </a>
@@ -222,7 +222,7 @@ export default function RootLayout({
               </div>
             </div>
             
-            <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid #374151', textAlign: 'center', color: '#9ca3af' }}>
+            <div className="mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
               <p>&copy; {new Date().getFullYear()} Emergency Weather Reporter. All rights reserved.</p>
             </div>
           </div>

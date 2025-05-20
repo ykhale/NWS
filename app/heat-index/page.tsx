@@ -7,7 +7,7 @@
 import HeatIndexPage from '@/app/heat-index/HeatIndexPage';
 
 export const metadata = {
-  title: 'Heat Index Map | Weather Alert System',
+  title: 'Heat Index Map | Emergency Weather Reporter',
   description: 'View current heat index levels across the United States with our interactive heat map.',
 };
 

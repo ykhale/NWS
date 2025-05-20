@@ -232,7 +232,7 @@ export default function AlertsPage() {
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
           <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Current Weather Alerts</h1>
           <p style={{ fontSize: '1.25rem', maxWidth: '42rem', margin: '0 auto' }}>
-            Stay informed about active weather alerts across the United States.
+            Stay informed about active weather alerts from Emergency Weather Reporter.
           </p>
         </div>
       </section>

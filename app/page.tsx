@@ -90,7 +90,7 @@ export default function Home() {
             marginBottom: '1.5rem',
             lineHeight: '1.2'
           }}>
-            Stay Safe with Real-Time Weather Alerts
+            Emergency Weather Reporter
           </h1>
           <p style={{ 
             fontSize: 'clamp(1.125rem, 3vw, 1.5rem)', 
@@ -143,7 +143,7 @@ export default function Home() {
             color: '#1f2937',
             padding: '0 1rem'
           }}>
-            Why Choose Our Alert System?
+            Why Choose Emergency Weather Reporter?
           </h2>
           
           <div className="grid grid-cols-1 md:grid-cols-3" style={{ gap: '2rem', padding: '0 1rem' }}>
@@ -202,7 +202,7 @@ export default function Home() {
             margin: '0 auto 2.5rem',
             padding: '0 1rem'
           }}>
-            Join thousands of users who rely on our service for critical weather updates.
+            Join thousands of users who rely on Emergency Weather Reporter for critical weather updates.
           </p>
           <Link href="/subscribe" className="btn btn-secondary" style={{ 
             padding: '1rem 2rem', 

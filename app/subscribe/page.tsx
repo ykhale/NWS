@@ -100,7 +100,7 @@ export default function SubscribePage() {
           />
         </div>
         <div style={{ position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: '0 1rem', textAlign: 'center' }}>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Subscribe to Weather Alerts</h1>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 'bold', marginBottom: '1.5rem' }}>Subscribe to Emergency Weather Reporter</h1>
           <p style={{ fontSize: '1.25rem', maxWidth: '48rem', margin: '0 auto' }}>
             Select the states you want to monitor and receive instant email notifications when severe weather events occur.
           </p>
@@ -114,15 +114,46 @@ export default function SubscribePage() {
             backgroundColor: 'white', 
             borderRadius: '0.75rem', 
             boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)', 
-            overflow: 'hidden' 
+            overflow: 'hidden',
+            padding: '2rem'
           }}>
-            <div className="flex flex-col md:flex-row">
-              <div className="p-8 flex-1">
-                <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1.5rem' }}>Select States</h2>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <div>
+                <label htmlFor="email" style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  style={{ 
+                    width: '100%', 
+                    padding: '0.75rem', 
+                    border: '1px solid #d1d5db', 
+                    borderRadius: '0.375rem',
+                    transition: 'all 0.2s',
+                    color: '#111827'
+                  }}
+                  placeholder="Enter your email address"
+                  required
+                />
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: '500', color: '#374151', marginBottom: '0.5rem' }}>
+                  Select States <span style={{ fontSize: '0.875rem', color: '#6b7280' }}>({selectedStates.length} selected)</span>
+                </label>
                 <div style={{ 
                   display: 'grid', 
                   gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', 
-                  gap: '0.5rem' 
+                  gap: '0.5rem', 
+                  maxHeight: '20rem', 
+                  overflowY: 'auto', 
+                  padding: '0.5rem', 
+                  border: '1px solid #e5e7eb', 
+                  borderRadius: '0.375rem',
+                  color: '#111827'
                 }}>
                   {states.map((state) => (
                     <label
@@ -131,9 +162,13 @@ export default function SubscribePage() {
                         display: 'flex', 
                         alignItems: 'center', 
                         padding: '0.5rem', 
-                        borderRadius: '0.375rem',
+                        border: '1px solid', 
+                        borderColor: selectedStates.includes(state) ? '#3b82f6' : '#e5e7eb',
+                        borderRadius: '0.375rem', 
                         cursor: 'pointer',
-                        backgroundColor: selectedStates.includes(state) ? '#dbeafe' : 'transparent'
+                        backgroundColor: selectedStates.includes(state) ? '#eff6ff' : 'transparent',
+                        color: selectedStates.includes(state) ? '#1d4ed8' : 'inherit',
+                        transition: 'all 0.2s'
                       }}
                     >
                       <input
@@ -146,43 +181,26 @@ export default function SubscribePage() {
                     </label>
                   ))}
                 </div>
-
-                <div style={{ marginTop: '2rem' }}>
-                  <h2 style={{ fontSize: '1.5rem', fontWeight: '600', marginBottom: '1rem' }}>Your Email</h2>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Enter your email address"
-                    style={{ 
-                      width: '100%', 
-                      padding: '0.75rem', 
-                      borderRadius: '0.375rem', 
-                      border: '1px solid #e5e7eb' 
-                    }}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  style={{ 
-                    width: '100%', 
-                    padding: '0.75rem 1rem', 
-                    borderRadius: '0.375rem', 
-                    color: 'white', 
-                    fontSize: '1.125rem', 
-                    fontWeight: '500',
-                    backgroundColor: isLoading ? '#60a5fa' : '#2563eb',
-                    cursor: isLoading ? 'not-allowed' : 'pointer',
-                    transition: 'background-color 0.2s',
-                    marginTop: '1rem'
-                  }}
-                >
-                  {isLoading ? 'Processing...' : 'Subscribe to Alerts'}
-                </button>
               </div>
-            </div>
+
+              <button
+                type="submit"
+                disabled={isLoading}
+                style={{ 
+                  width: '100%', 
+                  padding: '0.75rem 1rem', 
+                  borderRadius: '0.375rem', 
+                  color: 'white', 
+                  fontSize: '1.125rem', 
+                  fontWeight: '500',
+                  backgroundColor: isLoading ? '#60a5fa' : '#2563eb',
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                  transition: 'background-color 0.2s'
+                }}
+              >
+                {isLoading ? 'Processing...' : 'Subscribe to Alerts'}
+              </button>
+            </form>
           </div>
         </div>
       </section>

@@ -15,8 +15,8 @@ import './globals.css';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Weather Alert System',
-  description: 'Stay informed about severe weather with real-time alerts',
+  title: 'Emergency Weather Reporter',
+  description: 'Stay informed about severe weather with real-time alerts from Emergency Weather Reporter',
 };
 
 export default function RootLayout({
@@ -49,7 +49,7 @@ export default function RootLayout({
                     />
                   </svg>
                   <span style={{ marginLeft: '0.5rem', fontSize: '1.25rem', fontWeight: 'bold', color: '#1f2937' }}>
-                    Weather Alert System
+                    Emergency Weather Reporter
                   </span>
                 </Link>
               </div>
@@ -89,7 +89,7 @@ export default function RootLayout({
                     />
                   </svg>
                   <span style={{ marginLeft: '0.5rem', fontSize: '1.25rem', fontWeight: 'bold' }}>
-                    Weather Alert System
+                    Emergency Weather Reporter
                   </span>
                 </div>
                 <p style={{ marginTop: '1rem', color: '#9ca3af' }}>
@@ -155,7 +155,7 @@ export default function RootLayout({
             </div>
             
             <div style={{ marginTop: '2rem', paddingTop: '2rem', borderTop: '1px solid #374151', textAlign: 'center', color: '#9ca3af' }}>
-              <p>&copy; {new Date().getFullYear()} Weather Alert System. All rights reserved.</p>
+              <p>&copy; {new Date().getFullYear()} Emergency Weather Reporter. All rights reserved.</p>
             </div>
           </div>
         </footer>

@@ -267,7 +267,7 @@ export default function AlertsPage() {
                     <p style={{ color: '#6b7280' }}>Filtered by: {selectedState}</p>
                   )}
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                   <label htmlFor="state-filter" style={{ color: '#374151', fontWeight: '500' }}>
                     Filter by State:
                   </label>
@@ -280,7 +280,8 @@ export default function AlertsPage() {
                       border: '1px solid #d1d5db',
                       borderRadius: '0.375rem',
                       padding: '0.5rem 1rem',
-                      color: '#111827'
+                      color: '#111827',
+                      minWidth: '200px'
                     }}
                   >
                     <option value="">All States</option>
@@ -293,68 +294,71 @@ export default function AlertsPage() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '350px 1fr', gap: '1.5rem' }}>
+              <div className="grid grid-cols-1 lg:grid-cols-[350px,1fr] gap-6">
                 {/* Alert List */}
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '0.5rem',
-                  boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-                  padding: '1rem',
-                  height: '700px',
-                  overflow: 'auto'
-                }}>
-                  <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid #e5e7eb' }}>
-                    Alert List
-                  </h3>
+                <div className="order-2 lg:order-1">
+                  <div style={{
+                    backgroundColor: 'white',
+                    borderRadius: '0.5rem',
+                    boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+                    padding: '1rem',
+                    height: 'auto',
+                    maxHeight: '400px',
+                    overflow: 'auto'
+                  }} className="lg:max-h-[700px]">
+                    <h3 style={{ fontSize: '1.125rem', fontWeight: '600', marginBottom: '1rem', paddingBottom: '0.5rem', borderBottom: '1px solid #e5e7eb' }}>
+                      Alert List
+                    </h3>
 
-                  {filteredAlerts.length === 0 ? (
-                    <div style={{ textAlign: 'center', padding: '2rem 0' }}>
-                      <p style={{ color: '#6b7280' }}>No active alerts found.</p>
-                      {selectedState && (
-                        <p style={{ marginTop: '0.5rem', color: '#6b7280' }}>Try selecting a different state.</p>
-                      )}
-                    </div>
-                  ) : (
-                    <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                      {filteredAlerts.map((alert) => {
-                        const bgColor = alert.properties.severity === 'Extreme' ? '#fee2e2' :
-                          alert.properties.severity === 'Severe' ? '#ffedd5' :
-                            '#fef3c7';
-                        const borderColor = alert.properties.severity === 'Extreme' ? '#ef4444' :
-                          alert.properties.severity === 'Severe' ? '#f97316' :
-                            '#f59e0b';
-                        const textColor = alert.properties.severity === 'Extreme' ? '#991b1b' :
-                          alert.properties.severity === 'Severe' ? '#9a3412' :
-                            '#92400e';
+                    {filteredAlerts.length === 0 ? (
+                      <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+                        <p style={{ color: '#6b7280' }}>No active alerts found.</p>
+                        {selectedState && (
+                          <p style={{ marginTop: '0.5rem', color: '#6b7280' }}>Try selecting a different state.</p>
+                        )}
+                      </div>
+                    ) : (
+                      <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                        {filteredAlerts.map((alert) => {
+                          const bgColor = alert.properties.severity === 'Extreme' ? '#fee2e2' :
+                            alert.properties.severity === 'Severe' ? '#ffedd5' :
+                              '#fef3c7';
+                          const borderColor = alert.properties.severity === 'Extreme' ? '#ef4444' :
+                            alert.properties.severity === 'Severe' ? '#f97316' :
+                              '#f59e0b';
+                          const textColor = alert.properties.severity === 'Extreme' ? '#991b1b' :
+                            alert.properties.severity === 'Severe' ? '#9a3412' :
+                              '#92400e';
 
-                        return (
-                          <li
-                            key={alert.id}
-                            onClick={() => setSelectedAlert(alert)}
-                            style={{
-                              padding: '0.75rem',
-                              borderLeft: `4px solid ${borderColor}`,
-                              backgroundColor: selectedAlert?.id === alert.id ? `${bgColor}50` : bgColor,
-                              borderRadius: '0.25rem',
-                              cursor: 'pointer',
-                              transition: 'background-color 0.2s',
-                              boxShadow: selectedAlert?.id === alert.id ? '0 0 0 2px #3b82f6' : 'none'
-                            }}
-                          >
-                            <div style={{ fontWeight: '600', color: textColor }}>{alert.properties.event}</div>
-                            <div style={{ fontSize: '0.875rem' }}>{alert.properties.areaDesc}</div>
-                            <div style={{ fontSize: '0.75rem' }}>
-                              Expires: {new Date(alert.properties.expires).toLocaleString()}
-                            </div>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  )}
+                          return (
+                            <li
+                              key={alert.id}
+                              onClick={() => setSelectedAlert(alert)}
+                              style={{
+                                padding: '0.75rem',
+                                borderLeft: `4px solid ${borderColor}`,
+                                backgroundColor: selectedAlert?.id === alert.id ? `${bgColor}50` : bgColor,
+                                borderRadius: '0.25rem',
+                                cursor: 'pointer',
+                                transition: 'background-color 0.2s',
+                                boxShadow: selectedAlert?.id === alert.id ? '0 0 0 2px #3b82f6' : 'none'
+                              }}
+                            >
+                              <div style={{ fontWeight: '600', color: textColor }}>{alert.properties.event}</div>
+                              <div style={{ fontSize: '0.875rem' }}>{alert.properties.areaDesc}</div>
+                              <div style={{ fontSize: '0.75rem' }}>
+                                Expires: {new Date(alert.properties.expires).toLocaleString()}
+                              </div>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
                 </div>
 
                 {/* Map and Alert Details */}
-                <div>
+                <div className="order-1 lg:order-2">
                   {/* Map Component */}
                   <div style={{
                     backgroundColor: 'white',
@@ -396,22 +400,22 @@ export default function AlertsPage() {
                           {selectedAlert.properties.event}
                         </h2>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                           <div>
                             <h3 style={{ color: '#6b7280', fontSize: '0.875rem' }}>Area</h3>
                             <p style={{ fontWeight: '500' }}>{selectedAlert.properties.areaDesc}</p>
                           </div>
                           <div>
                             <h3 style={{ color: '#6b7280', fontSize: '0.875rem' }}>Status</h3>
-                            <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <div className="flex flex-col sm:flex-row gap-2">
                               <span style={{ fontWeight: '500' }}>Certainty: {selectedAlert.properties.certainty}</span>
-                              <span>•</span>
+                              <span className="hidden sm:inline">•</span>
                               <span style={{ fontWeight: '500' }}>Urgency: {selectedAlert.properties.urgency}</span>
                             </div>
                           </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1.5rem' }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                           <div>
                             <h3 style={{ color: '#6b7280', fontSize: '0.875rem' }}>Effective</h3>
                             <p style={{ fontWeight: '500' }}>
@@ -448,18 +452,10 @@ export default function AlertsPage() {
                           </div>
                         )}
 
-                        <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+                        <div style={{ marginTop: '2rem' }}>
                           <Link
                             href={`/subscribe?state=${selectedAlert.properties.areaDesc.split(',').pop()?.trim()}`}
-                            style={{
-                              backgroundColor: '#2563eb',
-                              color: 'white',
-                              padding: '0.5rem 1.5rem',
-                              borderRadius: '0.375rem',
-                              textDecoration: 'none',
-                              fontWeight: '500',
-                              transition: 'background-color 0.2s'
-                            }}
+                            className="block w-full sm:w-auto text-center sm:inline-block bg-blue-600 text-white px-6 py-2 rounded-md font-medium hover:bg-blue-700 transition-colors"
                           >
                             Subscribe to Similar Alerts
                           </Link>
